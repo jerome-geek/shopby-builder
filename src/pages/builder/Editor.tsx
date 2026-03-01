@@ -10,11 +10,17 @@ import HeroBannerBlock from '../../components/blocks/HeroBanner/HeroBannerBlock'
 import { HeroBannerProperties } from '../../components/blocks/HeroBanner/HeroBannerProperties';
 import HeaderBlock from '../../components/blocks/Header/HeaderBlock';
 import FooterBlock from '../../components/blocks/Footer/FooterBlock';
+import IconBannerBlock from '../../components/blocks/IconBanner/IconBannerBlock';
+import { IconBannerProperties } from '../../components/blocks/IconBanner/IconBannerProperties';
+import ProductListBlock from '../../components/blocks/ProductList/ProductListBlock';
+import { ProductListProperties } from '../../components/blocks/ProductList/ProductListProperties';
 
 const BlockRegistry: Record<string, React.FC<any>> = {
     HeroBanner: HeroBannerBlock,
     Header: HeaderBlock,
     Footer: FooterBlock,
+    IconBanner: IconBannerBlock,
+    ProductList: ProductListBlock,
 };
 
 const renderBlock = (block: any) => {
@@ -31,6 +37,8 @@ const renderBlock = (block: any) => {
 
 const PropertyFormRegistry: Record<string, React.FC<any>> = {
     HeroBanner: HeroBannerProperties,
+    IconBanner: IconBannerProperties,
+    ProductList: ProductListProperties,
 };
 
 const renderPropertyForm = (block: any) => {
@@ -119,6 +127,43 @@ const Editor: React.FC = () => {
         setSelectedBlockId(newBlockId);
     };
 
+    const handleAddIconBanner = () => {
+        const newBlockId = `block-${Date.now()}`;
+        addBlock({
+            id: newBlockId,
+            type: 'IconBanner',
+            order: draftSchema?.blocks.length || 0,
+            props: {
+                swiperOptions: {
+                    loop: false,
+                    pagination: false,
+                    navigation: false,
+                    slidesPerView: 6,
+                },
+            },
+        });
+        setSelectedBlockId(newBlockId);
+    };
+
+    const handleAddProductList = () => {
+        const newBlockId = `block-${Date.now()}`;
+        addBlock({
+            id: newBlockId,
+            type: 'ProductList',
+            order: draftSchema?.blocks.length || 0,
+            props: {
+                title: '입문 난이도 키트 모음',
+                swiperOptions: {
+                    loop: false,
+                    pagination: true,
+                    navigation: true,
+                    slidesPerView: 5,
+                },
+            },
+        });
+        setSelectedBlockId(newBlockId);
+    };
+
     if (isLoading) return <div className="p-8">Loading Builder...</div>;
     if (isError)
         return (
@@ -152,6 +197,18 @@ const Editor: React.FC = () => {
                     >
                         + Add Hero Banner
                     </button>
+                    <button
+                        onClick={handleAddIconBanner}
+                        className="w-full text-left p-3 border rounded bg-white shadow-sm hover:border-blue-500 transition-colors"
+                    >
+                        + Add Icon Banner
+                    </button>
+                    <button
+                        onClick={handleAddProductList}
+                        className="w-full text-left p-3 border rounded bg-white shadow-sm hover:border-blue-500 transition-colors"
+                    >
+                        + Add Product List
+                    </button>
                 </div>
             </div>
 
@@ -183,7 +240,7 @@ const Editor: React.FC = () => {
                 </div>
 
                 <div
-                    className="bg-white flex-1 min-h-[600px] shadow-sm rounded border flex flex-col overflow-y-auto"
+                    className="bg-white flex-1 min-h-[600px] shadow-sm rounded border overflow-y-auto"
                     onClick={(e) => {
                         // 캔버스 빈 공간 클릭 시 선택 해제
                         if (e.target === e.currentTarget) {
@@ -191,56 +248,64 @@ const Editor: React.FC = () => {
                         }
                     }}
                 >
-                    {/* 상단 Header 고정 영역 (레이아웃뷰) */}
-                    <div className="w-full pointer-events-none opacity-80 border-b-2 border-dashed border-gray-200">
-                        <HeaderBlock
-                            title="Shopby Logo"
-                            navigationItems={[
-                                { label: 'Shop', href: '#' },
-                                { label: 'About', href: '#' },
-                            ]}
-                        />
-                    </div>
+                    <div className="flex flex-col min-h-full">
+                        {/* 상단 Header (스크롤 컴포넌트 내부) */}
+                        <div className="w-full pointer-events-none opacity-80 border-b-2 border-dashed border-gray-200 shrink-0">
+                            <HeaderBlock
+                                title="Shopby Logo"
+                                navigationItems={[
+                                    { label: 'Shop', href: '#' },
+                                    { label: 'About', href: '#' },
+                                ]}
+                            />
+                        </div>
 
-                    <div className="flex-1 p-4 relative min-h-[300px]">
-                        {draftSchema.blocks.length === 0 ? (
-                            <div className="text-gray-400 absolute inset-0 flex items-center justify-center pointer-events-none">
-                                Empty Page. Add blocks from the left.
-                            </div>
-                        ) : (
-                            draftSchema.blocks.map((block) => {
-                                const isSelected = selectedBlockId === block.id;
-                                return (
-                                    <div
-                                        key={block.id}
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            setSelectedBlockId(block.id);
-                                        }}
-                                        className={`relative group transition-all mb-4 cursor-pointer outline outline-2 outline-offset-2 rounded-sm ${isSelected ? 'outline-blue-500 shadow-md' : 'outline-transparent hover:outline-blue-300'}`}
-                                    >
-                                        <div
-                                            className={`absolute top-2 right-2 z-50 transition-opacity ${isSelected ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
-                                        >
-                                            <span className="text-xs bg-blue-500 text-white px-2 py-1 rounded shadow">
-                                                {block.type}
-                                            </span>
-                                        </div>
-                                        <div className="pointer-events-none">
-                                            {renderBlock(block)}
-                                        </div>
-                                    </div>
-                                );
-                            })
-                        )}
-                    </div>
+                        {/* 블록 캔버스 영역 */}
+                        <div className="flex-1 w-full p-4 relative flex flex-col">
+                            {draftSchema.blocks.length === 0 ? (
+                                <div className="text-gray-400 absolute inset-0 flex items-center justify-center pointer-events-none">
+                                    Empty Page. Add blocks from the left.
+                                </div>
+                            ) : (
+                                <div className="flex-1 w-full space-y-4 pb-10">
+                                    {draftSchema.blocks.map((block) => {
+                                        const isSelected =
+                                            selectedBlockId === block.id;
+                                        return (
+                                            <div
+                                                key={block.id}
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    setSelectedBlockId(
+                                                        block.id,
+                                                    );
+                                                }}
+                                                className={`relative group transition-all cursor-pointer outline outline-2 outline-offset-2 rounded-sm ${isSelected ? 'outline-blue-500 shadow-md z-10' : 'outline-transparent hover:outline-blue-300'}`}
+                                            >
+                                                <div
+                                                    className={`absolute top-2 right-2 z-50 transition-opacity ${isSelected ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
+                                                >
+                                                    <span className="text-xs bg-blue-500 text-white px-2 py-1 rounded shadow">
+                                                        {block.type}
+                                                    </span>
+                                                </div>
+                                                <div className="pointer-events-none w-full h-full bg-white">
+                                                    {renderBlock(block)}
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            )}
+                        </div>
 
-                    {/* 하단 Footer 고정 영역 (레이아웃뷰) */}
-                    <div className="w-full pointer-events-none opacity-80 border-t-2 border-dashed border-gray-200 mt-auto">
-                        <FooterBlock
-                            companyName="Shopby Builder"
-                            copyrightYear="2026"
-                        />
+                        {/* 하단 Footer (스크롤 컨텐츠 마지막으로 포함됨) */}
+                        <div className="w-full pointer-events-none opacity-80 border-t-2 border-dashed border-gray-200 mt-auto shrink-0 bg-white">
+                            <FooterBlock
+                                companyName="Shopby Builder"
+                                copyrightYear="2026"
+                            />
+                        </div>
                     </div>
                 </div>
             </div>

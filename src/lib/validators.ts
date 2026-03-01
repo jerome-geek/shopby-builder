@@ -71,6 +71,7 @@ export const BlockSchema = z.object({
     id: z.string(),
     type: z.enum([
         'HeroBanner',
+        'IconBanner',
         'BannerGrid',
         'ProductList',
         'CategoryNav',

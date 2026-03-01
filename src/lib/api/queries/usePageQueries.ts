@@ -88,3 +88,23 @@ export const useGetHeroBanners = () => {
         },
     });
 };
+
+export const useGetIconBanners = () => {
+    return useQuery({
+        queryKey: ['iconBanners'],
+        queryFn: async () => {
+            const data = await api.get('/v1/blocks/icon-banner');
+            return data as unknown as any[];
+        },
+    });
+};
+
+export const useGetDisplayProducts = () => {
+    return useQuery({
+        queryKey: ['displayProducts'],
+        queryFn: async () => {
+            const data = await api.get('/v1/products/display');
+            return data as unknown as any[];
+        },
+    });
+};
