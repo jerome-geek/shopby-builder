@@ -1,16 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router';
-import { MockApi, PageData } from '../../lib/mockApi';
+import { useGetPagesByTenant } from '../../lib/api/queries/usePageQueries';
 
 const Dashboard: React.FC = () => {
     const navigate = useNavigate();
-    const [pages, setPages] = useState<PageData[]>([]);
+    const { data: pages = [], isLoading, isError } = useGetPagesByTenant('t-1');
 
-    useEffect(() => {
-        MockApi.initMockData();
-        const data = MockApi.getPagesByTenant('t-1');
-        setPages(data);
-    }, []);
+    if (isLoading) return <div className="p-8">Loading dashboard...</div>;
+    if (isError)
+        return <div className="p-8 text-red-500">Error loading dashboard</div>;
 
     return (
         <div className="p-8 max-w-4xl mx-auto">

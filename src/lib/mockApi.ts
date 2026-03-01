@@ -18,8 +18,8 @@ export interface PageData {
     publishedSchema: PageSchema | null;
 }
 
-const TENANT_KEY = 'sb_tenants_v2';
-const PAGES_KEY = 'sb_pages_v2';
+const TENANT_KEY = 'sb_tenants_v3';
+const PAGES_KEY = 'sb_pages_v3';
 
 // Memory abstraction over localStorage
 export const MockApi = {
@@ -81,64 +81,7 @@ export const MockApi = {
                     title: '메인 홈',
                     isEditable: true,
                     draftSchema: { blocks: [] },
-                    publishedSchema: {
-                        blocks: [
-                            {
-                                id: 'b-1',
-                                type: 'Header',
-                                order: 0,
-                                props: { title: 'Demo Store' },
-                            },
-                            {
-                                id: 'b-2',
-                                type: 'HeroBanner',
-                                order: 1,
-                                props: {
-                                    swiperOptions: {
-                                        autoplay: {
-                                            delay: 3000,
-                                            disableOnInteraction: false,
-                                        },
-                                        loop: true,
-                                        pagination: { clickable: true },
-                                        navigation: true,
-                                    },
-                                    items: [
-                                        {
-                                            id: 'slide-1',
-                                            imageUrl:
-                                                'https://images.unsplash.com/photo-1441986300917-64674bd600d8',
-                                            altText: 'Sale Banner',
-                                            link: { href: '#' },
-                                            content: {
-                                                title: '2026 Spring Collection',
-                                                titleColor: '#ffffff',
-                                                description:
-                                                    'Discover the new season styles',
-                                                descriptionColor: '#eeeeee',
-                                                position: 'center',
-                                            },
-                                        },
-                                        {
-                                            id: 'slide-2',
-                                            imageUrl:
-                                                'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04',
-                                            altText: 'New Arrivals',
-                                            link: { href: '#' },
-                                            content: {
-                                                title: 'New Arrivals',
-                                                titleColor: '#ffffff',
-                                                description:
-                                                    'Check out our latest products',
-                                                descriptionColor: '#eeeeee',
-                                                position: 'bottom',
-                                            },
-                                        },
-                                    ],
-                                },
-                            },
-                        ],
-                    },
+                    publishedSchema: { blocks: [] },
                 },
                 {
                     id: 'p-2',
