@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router';
-import { useAuthStore } from '../../store/useAuthStore';
+import { useAuthStore } from '@/store/useAuthStore';
 
 const AdminDashboard: React.FC = () => {
     const isLoggedIn = useAuthStore((state) => state.isLoggedIn);

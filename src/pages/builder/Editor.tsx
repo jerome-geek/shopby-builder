@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router';
-import { useBuilderStore } from '../../store/useBuilderStore';
+import { useBuilderStore } from '@/store/useBuilderStore';
 import {
     useGetPage,
     useSavePageDraft,
     usePublishPage,
-} from '../../lib/api/queries/usePageQueries';
-import HeroBannerBlock from '../../components/blocks/HeroBanner/HeroBannerBlock';
-import { HeroBannerProperties } from '../../components/blocks/HeroBanner/HeroBannerProperties';
-import HeaderBlock from '../../components/blocks/Header/HeaderBlock';
-import FooterBlock from '../../components/blocks/Footer/FooterBlock';
-import IconBannerBlock from '../../components/blocks/IconBanner/IconBannerBlock';
-import { IconBannerProperties } from '../../components/blocks/IconBanner/IconBannerProperties';
-import ProductListBlock from '../../components/blocks/ProductList/ProductListBlock';
-import { ProductListProperties } from '../../components/blocks/ProductList/ProductListProperties';
+} from '@/lib/api/queries/usePageQueries';
+import HeroBannerBlock from '@/components/blocks/HeroBanner/HeroBannerBlock';
+import { HeroBannerProperties } from '@/components/blocks/HeroBanner/HeroBannerProperties';
+import HeaderBlock from '@/components/blocks/Header/HeaderBlock';
+import FooterBlock from '@/components/blocks/Footer/FooterBlock';
+import IconBannerBlock from '@/components/blocks/IconBanner/IconBannerBlock';
+import { IconBannerProperties } from '@/components/blocks/IconBanner/IconBannerProperties';
+import ProductListBlock from '@/components/blocks/ProductList/ProductListBlock';
+import { ProductListProperties } from '@/components/blocks/ProductList/ProductListProperties';
 
 const BlockRegistry: Record<string, React.FC<any>> = {
     HeroBanner: HeroBannerBlock,

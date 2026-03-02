@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useBuilderStore } from '../../../store/useBuilderStore';
+import { useBuilderStore } from '@/store/useBuilderStore';
 
 const heroBannerSchema = z.object({
     swiperOptions: z

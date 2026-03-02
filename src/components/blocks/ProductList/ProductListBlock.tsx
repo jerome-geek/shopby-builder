@@ -6,7 +6,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
-import { useGetDisplayProducts } from '../../../lib/api/queries/usePageQueries';
+import { useGetDisplayProducts } from '@/lib/api/queries/usePageQueries';
 
 export interface ProductListProps {
     title?: string;

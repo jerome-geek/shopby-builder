@@ -6,7 +6,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
-import { useGetIconBanners } from '../../../lib/api/queries/usePageQueries';
+import { useGetIconBanners } from '@/lib/api/queries/usePageQueries';
 
 export interface IconBannerProps {
     swiperOptions?: {

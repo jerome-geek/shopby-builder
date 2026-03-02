@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useBuilderStore } from '../../../store/useBuilderStore';
+import { useBuilderStore } from '@/store/useBuilderStore';
 
 const swiperOptionsSchema = z.object({
     loop: z.boolean().default(false).optional(),

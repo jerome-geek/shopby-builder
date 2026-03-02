@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import { MockApi, PageData } from '../../lib/mockApi';
-import HeroBannerBlock from '../../components/blocks/HeroBanner/HeroBannerBlock';
-import HeaderBlock from '../../components/blocks/Header/HeaderBlock';
-import FooterBlock from '../../components/blocks/Footer/FooterBlock';
-import IconBannerBlock from '../../components/blocks/IconBanner/IconBannerBlock';
-import ProductListBlock from '../../components/blocks/ProductList/ProductListBlock';
+import { MockApi, PageData } from '@/lib/mockApi';
+import HeroBannerBlock from '@/components/blocks/HeroBanner/HeroBannerBlock';
+import HeaderBlock from '@/components/blocks/Header/HeaderBlock';
+import FooterBlock from '@/components/blocks/Footer/FooterBlock';
+import IconBannerBlock from '@/components/blocks/IconBanner/IconBannerBlock';
+import ProductListBlock from '@/components/blocks/ProductList/ProductListBlock';
 
 const Renderer: React.FC = () => {
     const { tenantId, '*': slug } = useParams<{
@@ -54,63 +54,98 @@ const Renderer: React.FC = () => {
 
     return (
         <div className="w-full flex flex-col min-h-screen">
-            {/* 고정된 헤더와 푸터 블록들을 찾아서 먼저 뽑아냅니다. */}
-            {/* Header Rendering */}
-            {pageData.publishedSchema.blocks
-                .filter((b) => b.type === 'Header')
-                .map((block) => (
-                    <div key={block.id} className="w-full shrink-0">
-                        <HeaderBlock {...block.props} />
-                    </div>
-                ))}
+            {/* Header: Global or from blocks */}
+            {pageData.publishedSchema.blocks.some(
+                (b) => b.type === 'Header',
+            ) ? (
+                pageData.publishedSchema.blocks
+                    .filter((b) => b.type === 'Header')
+                    .map((block) => (
+                        <div key={block.id} className="w-full shrink-0">
+                            <HeaderBlock {...block.props} />
+                        </div>
+                    ))
+            ) : (
+                <div className="w-full shrink-0">
+                    <HeaderBlock
+                        title="Shopby Logo"
+                        navigationItems={[
+                            { label: 'Shop', href: '#' },
+                            { label: 'About', href: '#' },
+                        ]}
+                    />
+                </div>
+            )}
 
-            <div className="flex-1 w-full">
+            {/* Content 영역 */}
+            <main className="flex-1 w-full bg-white flex flex-col items-center">
                 {pageData.publishedSchema.blocks
                     .filter((b) => b.type !== 'Header' && b.type !== 'Footer')
                     .map((block) => {
-                        switch (block.type) {
-                            case 'HeroBanner':
-                                return (
-                                    <HeroBannerBlock
-                                        key={block.id}
-                                        {...block.props}
-                                    />
-                                );
-                            case 'IconBanner':
-                                return (
-                                    <IconBannerBlock
-                                        key={block.id}
-                                        {...block.props}
-                                    />
-                                );
-                            case 'ProductList':
-                                return (
-                                    <ProductListBlock
-                                        key={block.id}
-                                        {...block.props}
-                                    />
-                                );
-                            default:
-                                return (
-                                    <div
-                                        key={block.id}
-                                        className="p-4 border border-red-200 bg-red-50 text-red-600 m-4"
-                                    >
-                                        Unknown Block: {block.type}
-                                    </div>
-                                );
-                        }
-                    })}
-            </div>
+                        // HeroBanner는 브라우저 전체 너비 사용, 나머지는 1200px 중앙 정렬
+                        const isFullWidthBlock = block.type === 'HeroBanner';
 
-            {/* Footer Rendering */}
-            {pageData.publishedSchema.blocks
-                .filter((b) => b.type === 'Footer')
-                .map((block) => (
-                    <div key={block.id} className="w-full shrink-0 mt-auto">
-                        <FooterBlock {...block.props} />
-                    </div>
-                ))}
+                        return (
+                            <div
+                                key={block.id}
+                                className={
+                                    isFullWidthBlock
+                                        ? 'w-full'
+                                        : 'w-full max-w-[1200px] px-4 sm:px-6 lg:px-8 mx-auto'
+                                }
+                            >
+                                {(() => {
+                                    switch (block.type) {
+                                        case 'HeroBanner':
+                                            return (
+                                                <HeroBannerBlock
+                                                    {...block.props}
+                                                />
+                                            );
+                                        case 'IconBanner':
+                                            return (
+                                                <IconBannerBlock
+                                                    {...block.props}
+                                                />
+                                            );
+                                        case 'ProductList':
+                                            return (
+                                                <ProductListBlock
+                                                    {...block.props}
+                                                />
+                                            );
+                                        default:
+                                            return (
+                                                <div className="p-4 border border-red-200 bg-red-50 text-red-600 m-4">
+                                                    Unknown Block: {block.type}
+                                                </div>
+                                            );
+                                    }
+                                })()}
+                            </div>
+                        );
+                    })}
+            </main>
+
+            {/* Footer: Global or from blocks */}
+            {pageData.publishedSchema.blocks.some(
+                (b) => b.type === 'Footer',
+            ) ? (
+                pageData.publishedSchema.blocks
+                    .filter((b) => b.type === 'Footer')
+                    .map((block) => (
+                        <div key={block.id} className="w-full shrink-0 mt-auto">
+                            <FooterBlock {...block.props} />
+                        </div>
+                    ))
+            ) : (
+                <div className="w-full shrink-0 mt-auto">
+                    <FooterBlock
+                        companyName="Shopby Builder"
+                        copyrightYear="2026"
+                    />
+                </div>
+            )}
         </div>
     );
 };

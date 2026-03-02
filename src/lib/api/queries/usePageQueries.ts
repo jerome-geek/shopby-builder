@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { MockApi, PageData } from '../../mockApi';
-import { PageSchema } from '../../validators';
-import { api } from '../axios';
+import { MockApi, PageData } from '@/lib/mockApi';
+import { PageSchema } from '@/lib/validators';
+import { api } from '@/lib/api/axios';
 
 export const pageKeys = {
     all: ['pages'] as const,
@@ -84,7 +84,7 @@ export const useGetHeroBanners = () => {
         queryKey: ['heroBanners'],
         queryFn: async () => {
             const data = await api.get('/v1/blocks/hero-banner');
-            return data;
+            return data as unknown as any[];
         },
     });
 };

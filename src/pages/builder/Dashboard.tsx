@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router';
-import { useGetPagesByTenant } from '../../lib/api/queries/usePageQueries';
+import { useGetPagesByTenant } from '@/lib/api/queries/usePageQueries';
 
 const Dashboard: React.FC = () => {
     const navigate = useNavigate();

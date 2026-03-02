@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { useAuthStore } from '../../store/useAuthStore';
+import { useAuthStore } from '@/store/useAuthStore';
 
 const Login: React.FC = () => {
     const [id, setId] = useState('');

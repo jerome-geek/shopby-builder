@@ -7,7 +7,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
-import { useGetHeroBanners } from '../../../lib/api/queries/usePageQueries';
+import { useGetHeroBanners } from '@/lib/api/queries/usePageQueries';
 
 export interface HeroBannerProps {
     swiperOptions?: {
@@ -17,6 +17,13 @@ export interface HeroBannerProps {
     };
     items?: Array<any>;
 }
+
+const HeroBannerSkeleton = () => (
+    <div className="w-full h-[400px] md:h-[500px] lg:h-[600px] bg-gray-100 animate-pulse flex flex-col items-center justify-center space-y-4">
+        <div className="w-2/3 h-10 bg-gray-200 rounded"></div>
+        <div className="w-1/2 h-6 bg-gray-200 rounded"></div>
+    </div>
+);
 
 const HeroBannerBlock: React.FC<HeroBannerProps> = ({ swiperOptions }) => {
     const { data: items, isLoading, isError } = useGetHeroBanners();
@@ -30,11 +37,7 @@ const HeroBannerBlock: React.FC<HeroBannerProps> = ({ swiperOptions }) => {
     }, [swiperOptions]);
 
     if (isLoading) {
-        return (
-            <div className="w-full h-[300px] bg-gray-100 animate-pulse flex items-center justify-center text-gray-400">
-                Loading Banners...
-            </div>
-        );
+        return <HeroBannerSkeleton />;
     }
 
     if (isError || !items || items.length === 0) {
@@ -47,8 +50,8 @@ const HeroBannerBlock: React.FC<HeroBannerProps> = ({ swiperOptions }) => {
 
     return (
         <div
-            className="w-full relative bg-gray-200"
-            style={{ minHeight: '300px' }}
+            className="w-full relative bg-gray-200 overflow-hidden"
+            style={{ height: 'auto', maxHeight: '600px', aspectRatio: '16/9' }}
         >
             <Swiper
                 key={JSON.stringify(swiperOptions)}
@@ -67,11 +70,11 @@ const HeroBannerBlock: React.FC<HeroBannerProps> = ({ swiperOptions }) => {
                             <img
                                 src={item.imageUrl}
                                 alt={item.content?.title || 'Banner'}
-                                className="w-full h-full object-cover"
+                                className="w-full h-full object-cover object-center"
                             />
                             {/* position 속성(left/center/right)에 따른 플렉스 정렬 */}
                             <div
-                                className={`absolute inset-0 flex items-center bg-black bg-opacity-30 ${
+                                className={`absolute inset-0 flex items-center bg-black bg-opacity-20 ${
                                     item.content?.position === 'left'
                                         ? 'justify-start px-20'
                                         : item.content?.position === 'right'
@@ -84,7 +87,7 @@ const HeroBannerBlock: React.FC<HeroBannerProps> = ({ swiperOptions }) => {
                                         color:
                                             item.content?.titleColor || '#fff',
                                     }}
-                                    className="text-4xl font-bold"
+                                    className="text-4xl md:text-5xl font-bold tracking-tight drop-shadow-md"
                                 >
                                     {item.content?.title}
                                 </h2>

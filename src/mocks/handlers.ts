@@ -1,5 +1,5 @@
 import { http, HttpResponse } from 'msw';
-import { api } from '../lib/api/axios';
+import { api } from '@/lib/api/axios';
 
 export const handlers = [
     // HeroBanner 데이터 조회 API Mock (절대 경로로 지정해야 axios 3000번 포트를 정확히 가로챔)

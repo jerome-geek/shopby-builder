@@ -1,4 +1,4 @@
-import { PageSchema } from './validators';
+import { PageSchema } from '@/lib/validators';
 
 export interface Tenant {
     id: string;

@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { PageSchema, Block } from '../lib/validators';
+import { PageSchema, Block } from '@/lib/validators';
 
 interface BuilderState {
     pageId: string | null;
