@@ -8,20 +8,21 @@ const swiperOptionsSchema = z.object({
     loop: z.boolean().default(false).optional(),
     pagination: z.boolean().default(true).optional(),
     navigation: z.boolean().default(true).optional(),
-    slidesPerView: z.number().min(1).max(10).default(5).optional(),
+    slidesPerView: z.number().min(1).max(10).default(3.5).optional(),
 });
 
-const productListSchema = z.object({
+const specialExhibitionSchema = z.object({
     title: z.string().optional(),
-    productGroupType: z.enum(['best', 'new']).optional(),
+    description: z.string().optional(),
+    bannerImageUrl: z.string().optional(),
     swiperOptions: swiperOptionsSchema.optional(),
 });
 
-type ProductListFormData = z.infer<typeof productListSchema>;
+type SpecialExhibitionFormData = z.infer<typeof specialExhibitionSchema>;
 
-export const ProductListProperties: React.FC<{
+export const SpecialExhibitionProperties: React.FC<{
     blockId: string;
-    initialData?: Partial<ProductListFormData>;
+    initialData?: Partial<SpecialExhibitionFormData>;
 }> = ({ blockId, initialData }) => {
     const updateBlockProps = useBuilderStore((state) => state.updateBlockProps);
 
@@ -30,16 +31,17 @@ export const ProductListProperties: React.FC<{
         handleSubmit,
         reset,
         formState: { isDirty },
-    } = useForm<ProductListFormData>({
-        resolver: zodResolver(productListSchema),
+    } = useForm<SpecialExhibitionFormData>({
+        resolver: zodResolver(specialExhibitionSchema),
         defaultValues: {
-            title: initialData?.title || '상품 진열',
-            productGroupType: initialData?.productGroupType || 'best',
+            title: initialData?.title || '',
+            description: initialData?.description || '',
+            bannerImageUrl: initialData?.bannerImageUrl || '',
             swiperOptions: {
                 loop: false,
                 pagination: true,
                 navigation: true,
-                slidesPerView: 5,
+                slidesPerView: 3.5,
                 ...initialData?.swiperOptions,
             },
         },
@@ -47,19 +49,20 @@ export const ProductListProperties: React.FC<{
 
     useEffect(() => {
         reset({
-            title: initialData?.title || '상품 진열',
-            productGroupType: initialData?.productGroupType || 'best',
+            title: initialData?.title || '',
+            description: initialData?.description || '',
+            bannerImageUrl: initialData?.bannerImageUrl || '',
             swiperOptions: {
                 loop: false,
                 pagination: true,
                 navigation: true,
-                slidesPerView: 5,
+                slidesPerView: 3.5,
                 ...initialData?.swiperOptions,
             },
         });
     }, [initialData, reset]);
 
-    const onSubmit = (data: ProductListFormData) => {
+    const onSubmit = (data: SpecialExhibitionFormData) => {
         updateBlockProps(blockId, data);
     };
 
@@ -67,43 +70,40 @@ export const ProductListProperties: React.FC<{
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div className="bg-white p-4 rounded shadow-sm border border-gray-100">
                 <h3 className="text-sm font-semibold mb-3 border-b pb-2">
-                    Category Section
+                    Exhibition Info Override (Optional)
                 </h3>
                 <div className="space-y-3 mt-2">
                     <label className="block text-sm text-gray-700 mb-1">
-                        Section Title
+                        Title
                     </label>
                     <input
                         type="text"
                         {...register('title')}
                         className="w-full border rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:outline-none"
-                        placeholder="입문 난이도 키트 모음"
+                        placeholder="Leave empty to use API data"
                     />
                 </div>
-                <div className="space-y-3 mt-4">
+                <div className="space-y-3 mt-3">
                     <label className="block text-sm text-gray-700 mb-1">
-                        Product Group
+                        Description
                     </label>
-                    <div className="flex space-x-4">
-                        <label className="flex items-center space-x-2 text-sm text-gray-700">
-                            <input
-                                type="radio"
-                                value="best"
-                                {...register('productGroupType')}
-                                className="text-blue-600 focus:ring-blue-500"
-                            />
-                            <span>베스트 상품</span>
-                        </label>
-                        <label className="flex items-center space-x-2 text-sm text-gray-700">
-                            <input
-                                type="radio"
-                                value="new"
-                                {...register('productGroupType')}
-                                className="text-blue-600 focus:ring-blue-500"
-                            />
-                            <span>신상품</span>
-                        </label>
-                    </div>
+                    <input
+                        type="text"
+                        {...register('description')}
+                        className="w-full border rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:outline-none"
+                        placeholder="Leave empty to use API data"
+                    />
+                </div>
+                <div className="space-y-3 mt-3">
+                    <label className="block text-sm text-gray-700 mb-1">
+                        Banner Image URL
+                    </label>
+                    <input
+                        type="text"
+                        {...register('bannerImageUrl')}
+                        className="w-full border rounded p-2 text-sm focus:ring-1 focus:ring-blue-500 focus:outline-none"
+                        placeholder="Leave empty to use API data"
+                    />
                 </div>
             </div>
 
@@ -142,6 +142,7 @@ export const ProductListProperties: React.FC<{
                         </label>
                         <input
                             type="number"
+                            step="0.1"
                             {...register('swiperOptions.slidesPerView', {
                                 valueAsNumber: true,
                             })}

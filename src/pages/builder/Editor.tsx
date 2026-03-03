@@ -14,6 +14,8 @@ import IconBannerBlock from '@/components/blocks/IconBanner/IconBannerBlock';
 import { IconBannerProperties } from '@/components/blocks/IconBanner/IconBannerProperties';
 import ProductListBlock from '@/components/blocks/ProductList/ProductListBlock';
 import { ProductListProperties } from '@/components/blocks/ProductList/ProductListProperties';
+import SpecialExhibitionBlock from '@/components/blocks/SpecialExhibition/SpecialExhibitionBlock';
+import { SpecialExhibitionProperties } from '@/components/blocks/SpecialExhibition/SpecialExhibitionProperties';
 
 const BlockRegistry: Record<string, React.FC<any>> = {
     HeroBanner: HeroBannerBlock,
@@ -21,6 +23,7 @@ const BlockRegistry: Record<string, React.FC<any>> = {
     Footer: FooterBlock,
     IconBanner: IconBannerBlock,
     ProductList: ProductListBlock,
+    SpecialExhibition: SpecialExhibitionBlock,
 };
 
 const renderBlock = (block: any) => {
@@ -39,6 +42,7 @@ const PropertyFormRegistry: Record<string, React.FC<any>> = {
     HeroBanner: HeroBannerProperties,
     IconBanner: IconBannerProperties,
     ProductList: ProductListProperties,
+    SpecialExhibition: SpecialExhibitionProperties,
 };
 
 const renderPropertyForm = (block: any) => {
@@ -164,6 +168,24 @@ const Editor: React.FC = () => {
         setSelectedBlockId(newBlockId);
     };
 
+    const handleAddSpecialExhibition = () => {
+        const newBlockId = `block-${Date.now()}`;
+        addBlock({
+            id: newBlockId,
+            type: 'SpecialExhibition',
+            order: draftSchema?.blocks.length || 0,
+            props: {
+                swiperOptions: {
+                    loop: false,
+                    pagination: true,
+                    navigation: true,
+                    slidesPerView: 3.5,
+                },
+            },
+        });
+        setSelectedBlockId(newBlockId);
+    };
+
     if (isLoading) return <div className="p-8">Loading Builder...</div>;
     if (isError)
         return (
@@ -208,6 +230,12 @@ const Editor: React.FC = () => {
                         className="w-full text-left p-3 border rounded bg-white shadow-sm hover:border-blue-500 transition-colors"
                     >
                         + Add Product List
+                    </button>
+                    <button
+                        onClick={handleAddSpecialExhibition}
+                        className="w-full text-left p-3 border rounded bg-white shadow-sm hover:border-blue-500 transition-colors"
+                    >
+                        + Add Special Exhibition
                     </button>
                 </div>
             </div>

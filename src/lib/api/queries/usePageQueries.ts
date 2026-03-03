@@ -99,12 +99,22 @@ export const useGetIconBanners = () => {
     });
 };
 
-export const useGetDisplayProducts = () => {
+export const useGetDisplayProducts = (type: 'best' | 'new' = 'best') => {
     return useQuery({
-        queryKey: ['displayProducts'],
+        queryKey: ['displayProducts', type],
         queryFn: async () => {
-            const data = await api.get('/v1/products/display');
+            const data = await api.get(`/v1/products/${type}`);
             return data as unknown as any[];
+        },
+    });
+};
+
+export const useGetSpecialExhibition = () => {
+    return useQuery({
+        queryKey: ['specialExhibition'],
+        queryFn: async () => {
+            const data = await api.get('/v1/exhibitions/special');
+            return data as unknown as any;
         },
     });
 };

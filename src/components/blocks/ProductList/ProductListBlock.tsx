@@ -16,13 +16,19 @@ export interface ProductListProps {
         navigation?: boolean;
         slidesPerView?: number;
     };
+    productGroupType?: 'best' | 'new';
 }
 
 const ProductListBlock: React.FC<ProductListProps> = ({
     title = '상품 진열',
+    productGroupType = 'best',
     swiperOptions,
 }) => {
-    const { data: products, isLoading, isError } = useGetDisplayProducts();
+    const {
+        data: products,
+        isLoading,
+        isError,
+    } = useGetDisplayProducts(productGroupType);
 
     const activeModules = useMemo(() => {
         const modules = [];

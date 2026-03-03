@@ -74,6 +74,7 @@ export const BlockSchema = z.object({
         'IconBanner',
         'BannerGrid',
         'ProductList',
+        'SpecialExhibition',
         'CategoryNav',
         'Header',
         'Footer',

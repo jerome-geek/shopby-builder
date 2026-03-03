@@ -6,6 +6,7 @@ import HeaderBlock from '@/components/blocks/Header/HeaderBlock';
 import FooterBlock from '@/components/blocks/Footer/FooterBlock';
 import IconBannerBlock from '@/components/blocks/IconBanner/IconBannerBlock';
 import ProductListBlock from '@/components/blocks/ProductList/ProductListBlock';
+import SpecialExhibitionBlock from '@/components/blocks/SpecialExhibition/SpecialExhibitionBlock';
 
 const Renderer: React.FC = () => {
     const { tenantId, '*': slug } = useParams<{
@@ -111,6 +112,12 @@ const Renderer: React.FC = () => {
                                         case 'ProductList':
                                             return (
                                                 <ProductListBlock
+                                                    {...block.props}
+                                                />
+                                            );
+                                        case 'SpecialExhibition':
+                                            return (
+                                                <SpecialExhibitionBlock
                                                     {...block.props}
                                                 />
                                             );
