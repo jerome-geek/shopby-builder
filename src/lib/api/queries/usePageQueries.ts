@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { MockApi, PageData } from '@/lib/mockApi';
 import { PageSchema } from '@/lib/validators';
-import { api } from '@/lib/api/axios';
+import { adminApi, clientApi } from '@/api/core/request';
 
 export const pageKeys = {
     all: ['pages'] as const,
@@ -28,7 +28,7 @@ export const useGetPage = (pageId?: string) => {
         queryKey: pageKeys.detail(pageId!),
         queryFn: async (): Promise<PageData> => {
             MockApi.initMockData(); // 에디터 직진입 시에도 목업 데이터 생성 보장
-            // TODO: 추후 api.get(`/pages/${pageId}`) 형태로 대체
+            // TODO: 추후 adminApi.get(`/pages/${pageId}`) 형태로 대체
             const data = MockApi.getPageById(pageId!);
             if (!data) throw new Error('Page not found');
             return data;
@@ -50,7 +50,7 @@ export const useSavePageDraft = () => {
             pageId: string;
             schema: PageSchema;
         }) => {
-            // TODO: api.put(`/pages/${pageId}/draft`, schema) 대체
+            // TODO: adminApi.put(`/pages/${pageId}/draft`, schema) 대체
             MockApi.savePageDraft(pageId, schema);
             return true;
         },
@@ -67,7 +67,7 @@ export const usePublishPage = () => {
 
     return useMutation({
         mutationFn: async (pageId: string) => {
-            // TODO: api.post(`/pages/${pageId}/publish`) 혹은 관련 로직 대체
+            // TODO: adminApi.post(`/pages/${pageId}/publish`) 혹은 관련 로직 대체
             MockApi.publishPage(pageId);
             return true;
         },
@@ -83,7 +83,7 @@ export const useGetHeroBanners = () => {
     return useQuery({
         queryKey: ['heroBanners'],
         queryFn: async () => {
-            const data = await api.get('/v1/blocks/hero-banner');
+            const data = await clientApi.get('/v1/blocks/hero-banner');
             return data as unknown as any[];
         },
     });
@@ -93,7 +93,7 @@ export const useGetIconBanners = () => {
     return useQuery({
         queryKey: ['iconBanners'],
         queryFn: async () => {
-            const data = await api.get('/v1/blocks/icon-banner');
+            const data = await clientApi.get('/v1/blocks/icon-banner');
             return data as unknown as any[];
         },
     });
@@ -103,7 +103,7 @@ export const useGetDisplayProducts = (type: 'best' | 'new' = 'best') => {
     return useQuery({
         queryKey: ['displayProducts', type],
         queryFn: async () => {
-            const data = await api.get(`/v1/products/${type}`);
+            const data = await clientApi.get(`/v1/products/${type}`);
             return data as unknown as any[];
         },
     });
@@ -113,7 +113,7 @@ export const useGetSpecialExhibition = () => {
     return useQuery({
         queryKey: ['specialExhibition'],
         queryFn: async () => {
-            const data = await api.get('/v1/exhibitions/special');
+            const data = await clientApi.get('/v1/exhibitions/special');
             return data as unknown as any;
         },
     });

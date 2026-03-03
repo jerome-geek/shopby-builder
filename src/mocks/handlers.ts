@@ -1,9 +1,9 @@
 import { http, HttpResponse } from 'msw';
-import { api } from '@/lib/api/axios';
+import { clientApi } from '@/api/core/request';
 
 export const handlers = [
     // HeroBanner 데이터 조회 API Mock (절대 경로로 지정해야 axios 3000번 포트를 정확히 가로챔)
-    http.get(`${api.defaults.baseURL}/v1/blocks/hero-banner`, () => {
+    http.get(`${clientApi.defaults.baseURL}/v1/blocks/hero-banner`, () => {
         return HttpResponse.json([
             {
                 id: 'banner-1',
@@ -29,7 +29,7 @@ export const handlers = [
     }),
 
     // IconBanner 데이터 조회 API Mock
-    http.get(`${api.defaults.baseURL}/v1/blocks/icon-banner`, () => {
+    http.get(`${clientApi.defaults.baseURL}/v1/blocks/icon-banner`, () => {
         return HttpResponse.json([
             {
                 id: 'icon-1',
@@ -83,7 +83,7 @@ export const handlers = [
     }),
 
     // 상품 진열 데이터 조회 API Mock (베스트)
-    http.get(`${api.defaults.baseURL}/v1/products/best`, () => {
+    http.get(`${clientApi.defaults.baseURL}/v1/products/best`, () => {
         return HttpResponse.json([
             {
                 id: 'prod-best-1',
@@ -152,7 +152,7 @@ export const handlers = [
     }),
 
     // 상품 진열 데이터 조회 API Mock (신상품)
-    http.get(`${api.defaults.baseURL}/v1/products/new`, () => {
+    http.get(`${clientApi.defaults.baseURL}/v1/products/new`, () => {
         return HttpResponse.json([
             {
                 id: 'prod-new-1',
@@ -202,7 +202,7 @@ export const handlers = [
     }),
 
     // 기획전 데이터 통짜 반환
-    http.get(`${api.defaults.baseURL}/v1/exhibitions/special`, () => {
+    http.get(`${clientApi.defaults.baseURL}/v1/exhibitions/special`, () => {
         return HttpResponse.json({
             title: '책에도 예쁜 옷이 필요해',
             description: 'SNS 화제의 상품 북커버 기획전',
